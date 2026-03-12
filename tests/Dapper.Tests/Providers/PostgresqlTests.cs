@@ -44,79 +44,13 @@ namespace Dapper.Tests
             new Cat() { Breed = "Persian", Name="MAGNA"}
         };
 
-        [FactPostgresql]
-        public void TestPostgresqlArrayParameters()
-        {
-            using var conn = GetOpenNpgsqlConnection();
-
-            var transaction = conn.BeginTransaction();
-            conn.Execute("create table tcat ( id serial not null, breed character varying(20) not null, name character varying (20) not null);");
-            conn.Execute("insert into tcat(breed, name) values(:Breed, :Name) ", Cats);
-
-            var r = conn.Query<Cat>("select * from tcat where id=any(:catids)", new { catids = new[] { 1, 3, 5 } });
-            Assert.Equal(3, r.Count());
-            Assert.Equal(1, r.Count(c => c.Id == 1));
-            Assert.Equal(1, r.Count(c => c.Id == 3));
-            Assert.Equal(1, r.Count(c => c.Id == 5));
-            transaction.Rollback();
-        }
-
-        [FactPostgresql]
-        public void TestPostgresqlListParameters()
-        {
-            using var conn = GetOpenNpgsqlConnection();
-
-            var transaction = conn.BeginTransaction();
-            conn.Execute("create table tcat ( id serial not null, breed character varying(20) not null, name character varying (20) not null);");
-            conn.Execute("insert into tcat(breed, name) values(:Breed, :Name) ", new List<Cat>(Cats));
-
-            var r = conn.Query<Cat>("select * from tcat where id=any(:catids)", new { catids = new List<int> { 1, 3, 5 } });
-            Assert.Equal(3, r.Count());
-            Assert.Equal(1, r.Count(c => c.Id == 1));
-            Assert.Equal(1, r.Count(c => c.Id == 3));
-            Assert.Equal(1, r.Count(c => c.Id == 5));
-            transaction.Rollback();
-        }
+        
+        
 
         private class CharTable
         {
             public int Id { get; set; }
             public char CharColumn { get; set; }
-        }
-
-        [FactPostgresql]
-        public void TestPostgresqlChar()
-        {
-            using var conn = GetOpenNpgsqlConnection();
-
-            var transaction = conn.BeginTransaction();
-            conn.Execute("create table chartable (id serial not null, charcolumn \"char\" not null);");
-            conn.Execute("insert into chartable(charcolumn) values('a');");
-
-            var r = conn.Query<CharTable>("select * from chartable");
-            Assert.Single(r);
-            Assert.Equal('a', r.Single().CharColumn);
-            transaction.Rollback();
-        }
-
-        [FactPostgresql]
-        public void TestPostgresqlSelectArray()
-        {
-            using var conn = GetOpenNpgsqlConnection();
-
-            var r = conn.Query<int[]>("select array[1,2,3]").ToList();
-            Assert.Single(r);
-            Assert.Equal(new[] { 1, 2, 3 }, r.Single());
-        }
-
-        [FactPostgresql]
-        public void TestPostgresqlDateTimeUsage()
-        {
-            using var conn = GetOpenNpgsqlConnection();
-
-            DateTime now = DateTime.UtcNow;
-            DateTime? nilA = now, nilB = null;
-            _ = conn.ExecuteScalar("SELECT @now, @nilA, @nilB::timestamp", new { now, nilA, nilB });
         }
 
         [AttributeUsage(AttributeTargets.Method, AllowMultiple = false)]

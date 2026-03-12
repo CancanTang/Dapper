@@ -8,6 +8,7 @@ namespace Dapper.Tests
     public class ProviderTests
     {
         [Fact]
+        [Trait("Category", "Test1")]
         public void BulkCopy_SystemDataSqlClient()
         {
 #pragma warning disable CS0618 // Type or member is obsolete
@@ -17,6 +18,7 @@ namespace Dapper.Tests
         }
 
         [Fact]
+        [Trait("Category", "Test1")]
         public void BulkCopy_MicrosoftDataSqlClient()
         {
             using var conn = new Microsoft.Data.SqlClient.SqlConnection();

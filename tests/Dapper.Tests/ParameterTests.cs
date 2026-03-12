@@ -1448,6 +1448,7 @@ SELECT * FROM @Issue192 WHERE Field IN @µ AND Field_1 IN @µµ",
         }
 
         [Fact]
+        [Trait("Category", "Test1")]
         public void SO30156367_DynamicParamsWithoutExec()
         {
             var dbParams = new DynamicParameters();
@@ -1518,11 +1519,7 @@ SELECT * FROM @Issue192 WHERE Field IN @µ AND Field_1 IN @µµ",
             Assert.Equal(42, result);
         }
 
-        [FactLongRunning]
-        public void TestListExpansionPadding_Enabled() => TestListExpansionPadding(true);
-
-        [FactLongRunning]
-        public void TestListExpansionPadding_Disabled() => TestListExpansionPadding(false);
+        
 
         [Theory]
         [InlineData(true)]

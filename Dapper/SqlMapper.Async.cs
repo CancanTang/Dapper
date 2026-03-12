@@ -503,7 +503,6 @@ namespace Dapper
                     ThrowZeroRows(row);
                 }
                 while (await reader.NextResultAsync(cancel).ConfigureAwait(false)) { /* ignore result sets after the first */ }
-                command.OnCompleted();
                 return result;
             }
             finally

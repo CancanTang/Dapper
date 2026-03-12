@@ -48,6 +48,7 @@ namespace Dapper.Tests
     public class SqliteTypeHandlerTests : SqliteTypeTestBase
     {
         [FactSqlite]
+        [Trait("Category", "Test1")]
         public void Issue466_SqliteHatesOptimizations()
         {
             using var connection = GetSQLiteConnection();
@@ -66,6 +67,7 @@ namespace Dapper.Tests
         }
 
         [FactSqlite]
+        [Trait("Category", "Test1")]
         public async Task Issue466_SqliteHatesOptimizations_Async()
         {
             using var connection = GetSQLiteConnection();
@@ -87,6 +89,7 @@ namespace Dapper.Tests
     public class SqliteTests : SqliteTypeTestBase
     { 
         [FactSqlite]
+        [Trait("Category", "Test1")]
         public void DapperEnumValue_Sqlite()
         {
             using var connection = GetSQLiteConnection();
@@ -96,12 +99,14 @@ namespace Dapper.Tests
         
 
         [FactSqlite]
+        [Trait("Category", "Test1")]
         public void Isse467_SqliteLikesParametersWithPrefix()
         {
             Isse467_SqliteParameterNaming(true);
         }
 
         [FactSqlite]
+        [Trait("Category", "Test1")]
         public void Isse467_SqliteLikesParametersWithoutPrefix()
         { // see issue 375 / 467; note: fixed from RC2 onwards
             Isse467_SqliteParameterNaming(false);

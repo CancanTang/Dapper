@@ -44,6 +44,7 @@ namespace Dapper.Tests
     public class DuckDBTests : DuckDBTypeTestBase
     {
         [FactDuckDB]
+        [Trait("Category", "Test1")]
         public void DuckDBNamedParameter()
         {
             using var connection = GetDuckDBConnection();
@@ -53,6 +54,7 @@ namespace Dapper.Tests
         }
 
         [FactDuckDB]
+        [Trait("Category", "Test1")]
         public void DuckDBPositionalParameter()
         {
             using var connection = GetDuckDBConnection();

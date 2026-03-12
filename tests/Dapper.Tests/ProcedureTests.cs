@@ -319,6 +319,7 @@ namespace Dapper.Tests
         }
 
         [Theory]
+        [Trait("Category", "Test1")]
         [InlineData("foo", CommandType.StoredProcedure)]
         [InlineData("foo;", CommandType.Text)]
         [InlineData("foo bar", CommandType.Text)]

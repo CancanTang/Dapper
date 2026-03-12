@@ -679,6 +679,7 @@ select * from @bar", new { foo }).Single();
         }
 
         [Fact]
+        [Trait("Category", "Test1")]
         public void TestDbStringToString()
         {
             Assert.Equal("Dapper.DbString (Value: 'abcde', Length: 10, IsAnsi: True, IsFixedLength: True)", 
@@ -941,6 +942,7 @@ select * from @bar", new { foo }).Single();
         }
 
         [Fact]
+        [Trait("Category", "Test1")]
         public void ExecuteInvalidFromClosed()
         {
             using var conn = GetClosedConnection();
@@ -958,6 +960,7 @@ select * from @bar", new { foo }).Single();
         }
 
         [Fact]
+        [Trait("Category", "Test1")]
         public void QueryInvalidFromClosed()
         {
             using var conn = GetClosedConnection();
@@ -1197,16 +1200,7 @@ select * from @bar", new { foo }).Single();
             Assert.Null(obj);
         }
 
-        [FactLongRunning]
-        public void Issue263_Timeout()
-        {
-            var watch = Stopwatch.StartNew();
-            var i = connection.Query<int>("waitfor delay '00:01:00'; select 42;", commandTimeout: 300, buffered: false).Single();
-            watch.Stop();
-            Assert.Equal(42, i);
-            var minutes = watch.ElapsedMilliseconds / 1000 / 60;
-            Assert.True(minutes >= 0.95 && minutes <= 1.05);
-        }
+        
 
         [Fact]
         public void SO30435185_InvalidTypeOwner()

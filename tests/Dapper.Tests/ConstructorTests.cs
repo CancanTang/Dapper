@@ -241,6 +241,7 @@ SELECT * FROM @ExplicitConstructors"
         }
 
         [Fact]
+        [Trait("Category", "Test1")]
         public void Issue1993_PreferPropertyOverField() // https://github.com/DapperLib/Dapper/issues/1993
         {
             var oldValue = DefaultTypeMap.MatchNamesWithUnderscores;

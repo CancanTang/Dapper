@@ -207,6 +207,7 @@ end");
         }
 
         [Fact]
+        [Trait("Category", "Test1")]
         public void QueryMultipleInvalidFromClosed()
         {
             using var conn = GetClosedConnection();

@@ -2,6 +2,7 @@
 using System.Collections;
 using System.Data;
 using System.Data.Common;
+using Xunit;
 using Xunit.Abstractions;
 
 namespace Dapper.Tests;
@@ -9,6 +10,7 @@ namespace Dapper.Tests;
 public class WrappedReaderTests(ITestOutputHelper testOutputHelper)
 {
     [Fact]
+    [Trait("Category", "Test1")]
     public void DbWrappedReader_Dispose_DoesNotThrow()
     {
         var reader = new DbWrappedReader(new DummyDbCommand(), new ThrowOnCloseDbDataReader(testOutputHelper));
@@ -17,6 +19,7 @@ public class WrappedReaderTests(ITestOutputHelper testOutputHelper)
 
 #if !NETFRAMEWORK
     [Fact]
+    [Trait("Category", "Test1")]
     public async System.Threading.Tasks.Task DbWrappedReader_DisposeAsync_DoesNotThrow()
     {
         var reader = new DbWrappedReader(new DummyDbCommand(), new ThrowOnCloseDbDataReader(testOutputHelper));
@@ -25,6 +28,7 @@ public class WrappedReaderTests(ITestOutputHelper testOutputHelper)
 #endif
 
     [Fact]
+    [Trait("Category", "Test1")]
     public void WrappedBasicReader_Dispose_DoesNotThrow()
     {
         var reader = new WrappedBasicReader(new ThrowOnCloseIDataReader());
@@ -33,6 +37,7 @@ public class WrappedReaderTests(ITestOutputHelper testOutputHelper)
 
 #if !NETFRAMEWORK
     [Fact]
+    [Trait("Category", "Test1")]
     public async System.Threading.Tasks.Task WrappedBasicReader_DisposeAsync_DoesNotThrow()
     {
         var reader = new WrappedBasicReader(new ThrowOnCloseIDataReader());

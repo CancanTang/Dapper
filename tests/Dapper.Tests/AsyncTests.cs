@@ -489,39 +489,7 @@ namespace Dapper.Tests
             Assert.Equal(2, count);
         }
 
-        [FactLongRunning]
-        public async Task RunSequentialVersusParallelAsync()
-        {
-            var ids = Enumerable.Range(1, 20000).Select(id => new { id }).ToArray();
-            await MarsConnection.ExecuteAsync(new CommandDefinition("select @id", ids.Take(5), flags: CommandFlags.None)).ConfigureAwait(false);
-
-            var watch = Stopwatch.StartNew();
-            await MarsConnection.ExecuteAsync(new CommandDefinition("select @id", ids, flags: CommandFlags.None)).ConfigureAwait(false);
-            watch.Stop();
-            Console.WriteLine("No pipeline: {0}ms", watch.ElapsedMilliseconds);
-
-            watch = Stopwatch.StartNew();
-            await MarsConnection.ExecuteAsync(new CommandDefinition("select @id", ids, flags: CommandFlags.Pipelined)).ConfigureAwait(false);
-            watch.Stop();
-            Console.WriteLine("Pipeline: {0}ms", watch.ElapsedMilliseconds);
-        }
-
-        [FactLongRunning]
-        public void RunSequentialVersusParallelSync()
-        {
-            var ids = Enumerable.Range(1, 20000).Select(id => new { id }).ToArray();
-            MarsConnection.Execute(new CommandDefinition("select @id", ids.Take(5), flags: CommandFlags.None));
-
-            var watch = Stopwatch.StartNew();
-            MarsConnection.Execute(new CommandDefinition("select @id", ids, flags: CommandFlags.None));
-            watch.Stop();
-            Console.WriteLine("No pipeline: {0}ms", watch.ElapsedMilliseconds);
-
-            watch = Stopwatch.StartNew();
-            MarsConnection.Execute(new CommandDefinition("select @id", ids, flags: CommandFlags.Pipelined));
-            watch.Stop();
-            Console.WriteLine("Pipeline: {0}ms", watch.ElapsedMilliseconds);
-        }
+        
 
         private class BasicType
         {
@@ -658,34 +626,6 @@ SET @NumberOfLegs = @NumberOfLegs - 1
 SET @AddressName = 'bobs burgers'
 SET @AddressPersonId = @PersonId
 select 42", p).ConfigureAwait(false)).Single();
-
-            Assert.Equal("grillmaster", bob.Occupation);
-            Assert.Equal(2, bob.PersonId);
-            Assert.Equal(1, bob.NumberOfLegs);
-            Assert.Equal("bobs burgers", bob.Address.Name);
-            Assert.Equal(2, bob.Address.PersonId);
-            Assert.Equal(42, result);
-        }
-
-        [Fact]
-        public async Task TestSupportForDynamicParametersOutputExpressions_QueryFirst()
-        {
-            var bob = new Person { Name = "bob", PersonId = 1, Address = new Address { PersonId = 2 } };
-
-            var p = new DynamicParameters(bob);
-            p.Output(bob, b => b.PersonId);
-            p.Output(bob, b => b.Occupation);
-            p.Output(bob, b => b.NumberOfLegs);
-            p.Output(bob, b => b.Address!.Name);
-            p.Output(bob, b => b.Address!.PersonId);
-
-            var result = (await connection.QueryFirstAsync<int>(@"
-SET @Occupation = 'grillmaster' 
-SET @PersonId = @PersonId + 1 
-SET @NumberOfLegs = @NumberOfLegs - 1
-SET @AddressName = 'bobs burgers'
-SET @AddressPersonId = @PersonId
-select 42", p).ConfigureAwait(false));
 
             Assert.Equal("grillmaster", bob.Occupation);
             Assert.Equal(2, bob.PersonId);

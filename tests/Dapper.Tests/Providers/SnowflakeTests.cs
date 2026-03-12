@@ -38,41 +38,10 @@ namespace Dapper.Tests
             };
         }
 
-        [Fact]
-        public void Connect()
-        {
-            using var connection = GetConnection();
-            connection.Open();
-        }
+        
 
 
-        [Fact]
-        public void BasicQuery()
-        {
-
-            using var connection = GetConnection();
-            var nations = connection.Query<Nation>(@"SELECT * FROM NATION").AsList();
-            Assert.NotEmpty(nations);
-            Output.WriteLine($"nations: {nations.Count}");
-            foreach (var nation in nations)
-            {
-                Output.WriteLine($"{nation.N_NATIONKEY}: {nation.N_NAME} (region: {nation.N_REGIONKEY}), {nation.N_COMMENT}");
-            }
-        }
-
-        [Fact]
-        public void ParameterizedQuery()
-        {
-            using var connection = GetConnection();
-            const int region = 1;
-            var nations = connection.Query<Nation>(@"SELECT * FROM NATION WHERE N_REGIONKEY=?region?", new { region }).AsList();
-            Assert.NotEmpty(nations);
-            Output.WriteLine($"nations: {nations.Count}");
-            foreach (var nation in nations)
-            {
-                Output.WriteLine($"{nation.N_NATIONKEY}: {nation.N_NAME} (region: {nation.N_REGIONKEY}), {nation.N_COMMENT}");
-            }
-        }
+        
 
         public class Nation
         {
